@@ -1,10 +1,16 @@
 import "./App.css";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <h1 className="m-4 p-4 bg-amber-400 text-4xl rounded-2xl">
-      Hello Single Page Application.
-    </h1>
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+        <h1 className="bg-amber-400 text-2xl p-4 m-4 rounded-2xl">
+          E-Commerce Store
+        </h1>
+      </main>
+    </div>
   );
 }
 
