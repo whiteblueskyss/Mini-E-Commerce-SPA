@@ -9,7 +9,7 @@ import products from "./utility/products";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
-  const [Products, setProducts] = useState(products);
+  const [allProducts, setAllProducts] = useState([...products]);
 
   const cart = {
     cartItems,
@@ -19,7 +19,7 @@ function App() {
 
   return (
     <CartContext.Provider value={cart}>
-      <ProductContext.Provider value={{ Products, setProducts }}>
+      <ProductContext.Provider value={{ allProducts, setAllProducts }}>
         <Router>
           <div className="min-h-screen bg-gray-50">
             <div className="pt-15">

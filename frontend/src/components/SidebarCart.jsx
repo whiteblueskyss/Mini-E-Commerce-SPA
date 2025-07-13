@@ -1,39 +1,17 @@
+import { useContext } from "react";
+import { CartContext } from "../context/index";
 export default function SidebarCart({ isOpen, onClose }) {
-  // Dummy cart data
-  const cartItems = [
-    {
-      id: 1,
-      name: "Premium Wireless Headphones",
-      price: 2500,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 2,
-      name: "Smart Watch Pro",
-      price: 3200,
-      quantity: 2,
-      image:
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=100&h=100&fit=crop&crop=center",
-    },
-    {
-      id: 3,
-      name: "Laptop Backpack",
-      price: 1800,
-      quantity: 1,
-      image:
-        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=100&h=100&fit=crop&crop=center",
-    },
-  ];
+  const { cartItems } = useContext(CartContext);
 
-  // Calculate totals using for...loop
   let subtotal = 0;
+
   for (const { price, quantity } of cartItems) {
     subtotal += price * quantity;
   }
 
-  const deliveryFee = 150;
+  let deliveryFee = 150;
+  if (cartItems.length === 0) deliveryFee = 0; // No delivery fee if cart is empty
+
   const total = subtotal + deliveryFee;
 
   return (
@@ -41,7 +19,7 @@ export default function SidebarCart({ isOpen, onClose }) {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-opacity-50 backdrop-blur-sm"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 backdrop-blur-sm"
           onClick={onClose}
         />
       )}
@@ -54,10 +32,10 @@ export default function SidebarCart({ isOpen, onClose }) {
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">Your Cart</h2>
+          <h2 className="text-xl font-bold text-gray-900">Shopping Cart</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-4xl p-1 rounded-full hover:bg-gray-100 transition-colors"
+            className="text-gray-500 hover:text-gray-700 text-2xl p-1 rounded-full hover:bg-gray-100 transition-colors"
           >
             ×
           </button>

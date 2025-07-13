@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { CartIcon, HomeIcon } from "../assets/Svgs";
 import SidebarCart from "./SidebarCart";
+import { useContext } from "react";
+import { CartContext } from "../context/index";
 
-const Header = ({ cartItemCount = 3 }) => {
+const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const { itemCount } = useContext(CartContext);
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
@@ -36,9 +39,9 @@ const Header = ({ cartItemCount = 3 }) => {
             >
               <CartIcon className="w-5 h-5" />
               <span className="hidden sm:inline">Cart</span>
-              {cartItemCount > 0 && (
+              {itemCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-                  {cartItemCount}
+                  {itemCount}
                 </span>
               )}
             </button>

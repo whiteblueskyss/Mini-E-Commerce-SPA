@@ -1,14 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
-import products from "../utility/products";
 import RatingStars from "../utility/RatingStars";
 import { BackIcon } from "../assets/Svgs";
+import { ProductContext, CartContext } from "../context/index";
+import { useContext } from "react";
 
 export default function ProductDetails() {
+  const { allProducts } = useContext(ProductContext);
+
   const { id } = useParams();
   const navigate = useNavigate();
 
   // Get the specific product by ID from URL params
-  const product = products.find((p) => p.id === parseInt(id));
+  const product = allProducts.find((p) => p.id === parseInt(id));
 
   if (!product) {
     return (

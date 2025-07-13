@@ -1,11 +1,14 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import products from "../utility/products";
+import { CartContext, ProductContext } from "../context/index";
 import RatingStars from "../utility/RatingStars";
 
 function ProductCard() {
+  const { allProducts } = useContext(ProductContext);
+  // const { addToCart } = useContext(CartContext);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
-      {products.map((product) => (
+      {allProducts.map((product) => (
         <div
           key={product.id}
           className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
