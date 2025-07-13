@@ -1,10 +1,10 @@
 import "./App.css";
+import AllProducts from "./components/AllProducts";
 import Header from "./components/Header";
-import ProductCard from "./components/ProductCard";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 p-5">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         <h1 className="bg-amber-400 text-2xl p-4 m-4 rounded-2xl">
@@ -12,7 +12,7 @@ function App() {
         </h1>
       </main>
 
-      <ProductCard />
+      <AllProducts />
     </div>
   );
 }

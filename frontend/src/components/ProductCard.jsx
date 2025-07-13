@@ -1,16 +1,6 @@
 import { StarIcon } from "../assets/Svgs";
 
-function ProductCard() {
-  const product = {
-    id: 1,
-    title: "Sleeve Striped T-shirt",
-    price: 299,
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
-    rating: 4.5,
-    stock: 150,
-  };
-
+function ProductCard({ product }) {
   const renderStars = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
