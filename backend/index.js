@@ -1,9 +1,13 @@
 import bodyParser from "body-parser";
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import cartRouter from "./routes/cart.js";
 import productsRouter from "./routes/products.js";
+
+// Load environment variables
+dotenv.config();
 
 // Initialize Express app
 const app = express();
@@ -14,6 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const URL =
+  process.env.MONGODB_URI ||
   "mongodb+srv://whiteblueskyss:123qwe@cluster0.zpr77yk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 const PORT = process.env.PORT || 5000;
