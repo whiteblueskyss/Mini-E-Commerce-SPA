@@ -5,39 +5,74 @@ import AllProducts from "./components/AllProducts";
 import Header from "./components/Header";
 import ProductDetails from "./components/ProductDetails";
 import { CartContext, ProductContext } from "./context/index";
-import { productService } from "./services/api";
+import { cartService, productService } from "./services/api";
+import { sessionManager } from "./utility/session";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [sessionId, setSessionId] = useState(null);
+  const [cartLoaded, setCartLoaded] = useState(false);
+
+  // Save cart to backend whenever cartItems change (but only after initial load)
+  useEffect(() => {
+    if (sessionId && cartLoaded) {
+      const saveCartAsync = async () => {
+        try {
+          console.log("Saving cart items:", cartItems);
+          await cartService.saveCart(sessionId, cartItems);
+          console.log("Cart saved successfully");
+        } catch (error) {
+          console.error("Error saving cart:", error);
+        }
+      };
+      saveCartAsync();
+    }
+  }, [cartItems, sessionId, cartLoaded]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const initializeApp = async () => {
       try {
-        const data = await productService.getAllProducts();
+        // Initialize session
+        const session = sessionManager.getSessionId();
+        setSessionId(session);
 
-        if (data.success) {
-          setAllProducts(data.data);
+        // Fetch products
+        const productData = await productService.getAllProducts();
+        if (productData.success) {
+          setAllProducts(productData.data);
         } else {
           setError("Failed to fetch products");
+          return;
         }
+
+        // Fetch cart
+        const cartData = await cartService.getCart(session);
+        if (cartData.success) {
+          console.log("Cart loaded from server:", cartData.data);
+          setCartItems(cartData.data);
+        } else {
+          console.log("No cart found or error loading cart");
+        }
+        setCartLoaded(true);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error initializing app:", error);
         setError("Failed to connect to server");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    initializeApp();
   }, []);
 
   const cart = {
     cartItems,
     setCartItems,
     itemCount: cartItems.length,
+    sessionId,
   };
 
   // Show loading state while fetching products
