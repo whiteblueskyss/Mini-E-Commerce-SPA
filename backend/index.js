@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
+import cartRouter from "./routes/cart.js";
 import productsRouter from "./routes/products.js";
 
 // Initialize Express app
@@ -25,6 +26,7 @@ mongoose
 
 // Use routes
 app.use("/api/products", productsRouter);
+app.use("/api/cart", cartRouter);
 
 // Start the server
 app.listen(PORT, () => {
