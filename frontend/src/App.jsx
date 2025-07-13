@@ -53,6 +53,28 @@ function App() {
         if (cartData.success) {
           console.log("Cart loaded from server:", cartData.data);
           setCartItems(cartData.data);
+
+          // Update product stock based on cart items (using original stock from API)
+          if (cartData.data.length > 0) {
+            setAllProducts((prevProducts) =>
+              prevProducts.map((product) => {
+                // Find the original product data to get the original stock
+                const originalProduct = productData.data.find(
+                  (p) => p.id === product.id
+                );
+                const cartItem = cartData.data.find(
+                  (item) => item.id === product.id
+                );
+                if (cartItem && originalProduct) {
+                  return {
+                    ...product,
+                    stock: originalProduct.stock - cartItem.quantity,
+                  };
+                }
+                return product;
+              })
+            );
+          }
         } else {
           console.log("No cart found or error loading cart");
         }
