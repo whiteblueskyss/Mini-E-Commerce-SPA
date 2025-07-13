@@ -1,10 +1,17 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/index";
 import { useCartActions } from "../hooks/useCartActions";
 
 export default function SidebarCart({ isOpen, onClose }) {
   const { cartItems } = useContext(CartContext);
   const { updateQuantity, removeFromCart } = useCartActions();
+  const navigate = useNavigate();
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+    onClose(); // Close the cart sidebar when navigating
+  };
 
   let subtotal = 0;
 
@@ -59,16 +66,24 @@ export default function SidebarCart({ isOpen, onClose }) {
                 key={item.id}
                 className="flex items-center space-x-4 py-4 border-b border-gray-100 last:border-b-0"
               >
-                <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                <div
+                  className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all duration-200"
+                  onClick={() => handleProductClick(item.id)}
+                  title="View product details"
+                >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
                   />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-gray-900 text-sm mb-2 truncate">
+                  <h3
+                    className="font-medium text-gray-900 text-sm mb-2 truncate cursor-pointer hover:text-blue-600 transition-colors"
+                    onClick={() => handleProductClick(item.id)}
+                    title="View product details"
+                  >
                     {item.name}
                   </h3>
 
