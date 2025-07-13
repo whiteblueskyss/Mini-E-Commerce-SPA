@@ -1,39 +1,12 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { CartContext, ProductContext } from "../context/index";
+import { ProductContext } from "../context/index";
+import { useCartActions } from "../hooks/useCartActions";
 import RatingStars from "../utility/RatingStars";
 
 function ProductCard() {
   const { allProducts } = useContext(ProductContext);
-
-  const { cartItems, setCartItems } = useContext(CartContext);
-
-  const isInCart = (productId) => {
-    return cartItems.some((item) => item.id === productId);
-  };
-
-  const handleAddToCart = (product) => {
-    const newItem = {
-      id: product.id,
-      name: product.title,
-      image: product.image,
-      price: product.price,
-      quantity: 1,
-    };
-    setCartItems([...cartItems, newItem]);
-  };
-
-  const handleRemoveFromCart = (productId) => {
-    setCartItems(cartItems.filter((item) => item.id !== productId));
-  };
-
-  const handleToggleCart = (product) => {
-    if (isInCart(product.id)) {
-      handleRemoveFromCart(product.id);
-    } else {
-      handleAddToCart(product);
-    }
-  };
+  const { isInCart, toggleCart } = useCartActions();
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
@@ -88,7 +61,7 @@ function ProductCard() {
               }`}
               onClick={(event) => {
                 event.preventDefault();
-                handleToggleCart(product);
+                toggleCart(product);
               }}
             >
               {isInCart(product.id) ? "Remove from Cart" : "Add to Cart"}

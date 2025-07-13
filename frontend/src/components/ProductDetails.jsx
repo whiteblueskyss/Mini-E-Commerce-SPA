@@ -1,49 +1,18 @@
 import { useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BackIcon } from "../assets/Svgs";
-import { CartContext, ProductContext } from "../context/index";
+import { ProductContext } from "../context/index";
+import { useCartActions } from "../hooks/useCartActions";
 import RatingStars from "../utility/RatingStars";
 
 export default function ProductDetails() {
   const { allProducts } = useContext(ProductContext);
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const { isInCart, getQuantityInCart, toggleCart } = useCartActions();
 
   const { id } = useParams();
   const navigate = useNavigate();
 
   const product = allProducts.find((p) => p.id === parseInt(id));
-
-  const isInCart = (productId) => {
-    return cartItems.some((item) => item.id === productId);
-  };
-
-  const handleAddToCart = (product) => {
-    const newItem = {
-      id: product.id,
-      name: product.title,
-      image: product.image,
-      price: product.price,
-      quantity: 1,
-    };
-    setCartItems([...cartItems, newItem]);
-  };
-
-  const handleRemoveFromCart = (productId) => {
-    setCartItems(cartItems.filter((item) => item.id !== productId));
-  };
-
-  const getQuantityInCart = (productId) => {
-    const item = cartItems.find((item) => item.id === productId);
-    return item ? item.quantity : 0;
-  };
-
-  const handleToggleCart = (product) => {
-    if (isInCart(product.id)) {
-      handleRemoveFromCart(product.id);
-    } else {
-      handleAddToCart(product);
-    }
-  };
 
   if (!product) {
     return (
@@ -162,7 +131,7 @@ export default function ProductDetails() {
                 ? "bg-red-600 text-white hover:bg-red-700"
                 : "bg-slate-800 text-white hover:bg-slate-900"
             }`}
-            onClick={() => handleToggleCart(product)}
+            onClick={() => toggleCart(product)}
             disabled={product.stock === 0}
           >
             {product.stock === 0

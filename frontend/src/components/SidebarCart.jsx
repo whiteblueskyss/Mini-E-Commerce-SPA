@@ -1,22 +1,10 @@
 import { useContext } from "react";
 import { CartContext } from "../context/index";
+import { useCartActions } from "../hooks/useCartActions";
 
 export default function SidebarCart({ isOpen, onClose }) {
-  const { cartItems, setCartItems } = useContext(CartContext);
-
-  const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity < 1) return;
-
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === productId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeFromCart = (productId) => {
-    setCartItems(cartItems.filter((item) => item.id !== productId));
-  };
+  const { cartItems } = useContext(CartContext);
+  const { updateQuantity, removeFromCart } = useCartActions();
 
   let subtotal = 0;
 
