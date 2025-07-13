@@ -88,11 +88,17 @@ export const useCartActions = () => {
     updateProductStock(productId, -quantityDifference);
   };
 
+  // Clear entire cart
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   return {
     isInCart,
     getQuantityInCart,
     toggleCart,
     updateQuantity,
     removeFromCart,
+    clearCart,
   };
 };

@@ -1,13 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext, ProductContext } from "../context/index";
 import { useCartActions } from "../hooks/useCartActions";
+import CheckoutModal from "./CheckoutModal";
 
 export default function SidebarCart({ isOpen, onClose }) {
   const { cartItems } = useContext(CartContext);
   const { allProducts } = useContext(ProductContext);
   const { updateQuantity, removeFromCart } = useCartActions();
   const navigate = useNavigate();
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   // Get product stock by ID
   const getProductStock = (productId) => {
@@ -18,6 +20,15 @@ export default function SidebarCart({ isOpen, onClose }) {
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
     onClose(); // Close the cart sidebar when navigating
+  };
+
+  const handleCheckout = () => {
+    if (cartItems.length === 0) return;
+    setIsCheckoutModalOpen(true);
+  };
+
+  const handleCheckoutModalClose = () => {
+    setIsCheckoutModalOpen(false);
   };
 
   let subtotal = 0;
@@ -185,7 +196,15 @@ export default function SidebarCart({ isOpen, onClose }) {
           </div>
 
           {/* Checkout Button */}
-          <button className="w-full bg-slate-800 text-white py-3 px-4 rounded-lg font-semibold hover:bg-slate-900 transition-colors duration-200 flex items-center justify-center space-x-2">
+          <button
+            className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors duration-200 flex items-center justify-center space-x-2 ${
+              cartItems.length === 0
+                ? "bg-gray-400 text-gray-200 cursor-not-allowed"
+                : "bg-slate-800 text-white hover:bg-slate-900"
+            }`}
+            onClick={handleCheckout}
+            disabled={cartItems.length === 0}
+          >
             <span>Checkout</span>
             <svg
               className="w-5 h-5"
@@ -203,6 +222,15 @@ export default function SidebarCart({ isOpen, onClose }) {
           </button>
         </div>
       </div>
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={handleCheckoutModalClose}
+        onCartClose={onClose}
+        cartItems={cartItems}
+        total={total}
+      />
     </>
   );
 }
