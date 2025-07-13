@@ -24,7 +24,7 @@ A modern, responsive single-page application (SPA) built with React.js that prov
 
 ## Live Demo
 
-Check the live aplication [here](https://mini-e-commerce-spa-psi.vercel.app/).
+Check out the live application [here](https://mini-e-commerce-spa-psi.vercel.app/).
 
 ## 🛠️ Tech Stack
 
