@@ -17,9 +17,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const URL =
-  process.env.MONGODB_URI ||
-  "mongodb+srv://whiteblueskyss:123qwe@cluster0.zpr77yk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const URL = process.env.MONGODB_URI;
 
 const PORT = process.env.PORT || 5000;
 
