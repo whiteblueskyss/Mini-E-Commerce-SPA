@@ -31,7 +31,7 @@ function ProductCard() {
               {/* Rating and Stock - same line */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
-                  {RatingStars(product.rating)}
+                  <RatingStars rating={product.rating} />
                   <span className="text-xs text-gray-500 ml-1">
                     {product.rating}/5
                   </span>
