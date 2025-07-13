@@ -1,12 +1,19 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { CartContext } from "../context/index";
+import { CartContext, ProductContext } from "../context/index";
 import { useCartActions } from "../hooks/useCartActions";
 
 export default function SidebarCart({ isOpen, onClose }) {
   const { cartItems } = useContext(CartContext);
+  const { allProducts } = useContext(ProductContext);
   const { updateQuantity, removeFromCart } = useCartActions();
   const navigate = useNavigate();
+
+  // Get product stock by ID
+  const getProductStock = (productId) => {
+    const product = allProducts.find((p) => p.id === productId);
+    return product ? product.stock : 0;
+  };
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
@@ -119,12 +126,23 @@ export default function SidebarCart({ isOpen, onClose }) {
                         {item.quantity}
                       </span>
                       <button
-                        className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
+                          getProductStock(item.id) === 0
+                            ? "bg-gray-50 cursor-not-allowed"
+                            : "bg-gray-100 hover:bg-gray-200"
+                        }`}
                         onClick={() =>
                           updateQuantity(item.id, item.quantity + 1)
                         }
+                        disabled={getProductStock(item.id) === 0}
                       >
-                        <span className="text-gray-600 text-sm font-medium">
+                        <span
+                          className={`text-gray-600 text-sm font-medium ${
+                            getProductStock(item.id) === 0
+                              ? "text-gray-300"
+                              : "text-gray-600"
+                          }`}
+                        >
                           +
                         </span>
                       </button>

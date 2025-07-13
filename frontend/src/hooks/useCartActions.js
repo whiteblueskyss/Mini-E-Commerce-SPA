@@ -1,13 +1,25 @@
 import { useContext } from "react";
-import { CartContext } from "../context/index";
+import { CartContext, ProductContext } from "../context/index";
 
 // Custom hook for cart actions
 export const useCartActions = () => {
   const { cartItems, setCartItems } = useContext(CartContext);
+  const { allProducts, setAllProducts } = useContext(ProductContext);
+
+  // Update product stock
+  const updateProductStock = (productId, stockChange) => {
+    setAllProducts(
+      allProducts.map((product) =>
+        product.id === productId
+          ? { ...product, stock: product.stock + stockChange }
+          : product
+      )
+    );
+  };
 
   // Check if product is in cart
   const isInCart = (productId) => {
-    return cartItems.some((item) => item.id === productId);
+    return cartItems.find((item) => item.id === productId) !== undefined;
   };
 
   // Get quantity of product in cart
@@ -18,6 +30,8 @@ export const useCartActions = () => {
 
   // Add product to cart
   const addToCart = (product) => {
+    if (product.stock <= 0) return; // Don't add if no stock
+
     const newItem = {
       id: product.id,
       name: product.title,
@@ -26,11 +40,20 @@ export const useCartActions = () => {
       quantity: 1,
     };
     setCartItems([...cartItems, newItem]);
+
+    // Decrease stock by 1
+    updateProductStock(product.id, -1);
   };
 
   // Remove product from cart
   const removeFromCart = (productId) => {
-    setCartItems(cartItems.filter((item) => item.id !== productId));
+    const itemToRemove = cartItems.find((item) => item.id === productId);
+    if (itemToRemove) {
+      setCartItems(cartItems.filter((item) => item.id !== productId));
+
+      // Increase stock by the quantity that was in cart
+      updateProductStock(productId, itemToRemove.quantity);
+    }
   };
 
   // Toggle product in cart (add if not present, remove if present)
@@ -44,43 +67,32 @@ export const useCartActions = () => {
 
   // Update quantity of product in cart
   const updateQuantity = (productId, newQuantity) => {
-    if (newQuantity < 1) return; // Don't allow quantity less than 1
+    const currentItem = cartItems.find((item) => item.id === productId);
+    if (!currentItem || newQuantity < 1) return;
+
+    const quantityDifference = newQuantity - currentItem.quantity;
+    const product = allProducts.find((p) => p.id === productId);
+
+    // Check if we have enough stock for the increase
+    if (quantityDifference > 0 && product.stock < quantityDifference) {
+      return; // Not enough stock
+    }
 
     setCartItems(
       cartItems.map((item) =>
         item.id === productId ? { ...item, quantity: newQuantity } : item
       )
     );
-  };
 
-  // Get total items count in cart
-  const getTotalItemsCount = () => {
-    return cartItems.reduce((total, item) => total + item.quantity, 0);
-  };
-
-  // Get total price of cart
-  const getTotalPrice = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
-
-  // Clear entire cart
-  const clearCart = () => {
-    setCartItems([]);
+    // Update stock (negative difference means we're taking more stock)
+    updateProductStock(productId, -quantityDifference);
   };
 
   return {
-    cartItems,
     isInCart,
     getQuantityInCart,
-    addToCart,
-    removeFromCart,
     toggleCart,
     updateQuantity,
-    getTotalItemsCount,
-    getTotalPrice,
-    clearCart,
+    removeFromCart,
   };
 };

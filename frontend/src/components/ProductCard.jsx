@@ -38,8 +38,14 @@ function ProductCard() {
                     {product.rating}/5
                   </span>
                 </div>
-                <span className="text-xs text-gray-400 whitespace-nowrap">
-                  ({product.stock} pcs left)
+                <span
+                  className={`text-xs whitespace-nowrap ${
+                    product.stock === 0 ? "text-red-500" : "text-gray-400"
+                  }`}
+                >
+                  {product.stock === 0
+                    ? "Out of stock"
+                    : `(${product.stock} pcs left)`}
                 </span>
               </div>
 
@@ -57,14 +63,21 @@ function ProductCard() {
               className={`w-full py-2 px-3 rounded-md transition-colors duration-200 font-medium text-sm ${
                 isInCart(product.id)
                   ? "bg-red-600 text-white hover:bg-red-700"
+                  : product.stock === 0
+                  ? "bg-gray-400 text-gray-200 cursor-not-allowed"
                   : "bg-slate-800 text-white hover:bg-slate-900"
               }`}
               onClick={(event) => {
                 event.preventDefault();
                 toggleCart(product);
               }}
+              disabled={!isInCart(product.id) && product.stock === 0}
             >
-              {isInCart(product.id) ? "Remove from Cart" : "Add to Cart"}
+              {isInCart(product.id)
+                ? "Remove from Cart"
+                : product.stock === 0
+                ? "Out of Stock"
+                : "Add to Cart"}
             </button>
           </div>
         </div>
