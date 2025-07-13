@@ -1,17 +1,49 @@
-import { useNavigate, useParams } from "react-router-dom";
-import RatingStars from "../utility/RatingStars";
-import { BackIcon } from "../assets/Svgs";
-import { ProductContext, CartContext } from "../context/index";
 import { useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { BackIcon } from "../assets/Svgs";
+import { CartContext, ProductContext } from "../context/index";
+import RatingStars from "../utility/RatingStars";
 
 export default function ProductDetails() {
   const { allProducts } = useContext(ProductContext);
+  const { cartItems, setCartItems } = useContext(CartContext);
 
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Get the specific product by ID from URL params
   const product = allProducts.find((p) => p.id === parseInt(id));
+
+  const isInCart = (productId) => {
+    return cartItems.some((item) => item.id === productId);
+  };
+
+  const handleAddToCart = (product) => {
+    const newItem = {
+      id: product.id,
+      name: product.title,
+      image: product.image,
+      price: product.price,
+      quantity: 1,
+    };
+    setCartItems([...cartItems, newItem]);
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    setCartItems(cartItems.filter((item) => item.id !== productId));
+  };
+
+  const getQuantityInCart = (productId) => {
+    const item = cartItems.find((item) => item.id === productId);
+    return item ? item.quantity : 0;
+  };
+
+  const handleToggleCart = (product) => {
+    if (isInCart(product.id)) {
+      handleRemoveFromCart(product.id);
+    } else {
+      handleAddToCart(product);
+    }
+  };
 
   if (!product) {
     return (
@@ -48,13 +80,12 @@ export default function ProductDetails() {
 
         {/* Product Information */}
         <div className="flex flex-col justify-start">
-          {/* Product Title */}
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
             {product.title}
           </h1>
 
           {/* Rating */}
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-2">
             <div className="flex items-center space-x-1">
               <RatingStars rating={product.rating} />
             </div>
@@ -67,14 +98,14 @@ export default function ProductDetails() {
           </div>
 
           {/* Price */}
-          <div className="mb-6">
-            <span className="text-4xl font-bold text-gray-900">
+          <div className="mb-3">
+            <span className="text-2xl font-bold text-gray-900">
               ৳{product.price}
             </span>
           </div>
 
           {/* Description */}
-          <div className="mb-6">
+          <div className="mb-3">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               Description
             </h3>
@@ -84,8 +115,8 @@ export default function ProductDetails() {
           </div>
 
           {/* Product Details */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+          <div className="mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-1.5">
               Product Details
             </h3>
             <div className="space-y-2">
@@ -112,9 +143,33 @@ export default function ProductDetails() {
             </div>
           </div>
 
+          {/* Cart Status Indicator */}
+          {isInCart(product.id) && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                <span className="text-green-700 font-medium">
+                  In Cart - Quantity: {getQuantityInCart(product.id)}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Add to Cart Button */}
-          <button className="w-full bg-slate-800 text-white py-4 px-6 rounded-lg hover:bg-slate-900 transition-colors duration-200 font-semibold text-lg disabled:bg-gray-400 disabled:cursor-not-allowed">
-            Add to Cart
+          <button
+            className={`w-full py-4 px-6 rounded-lg transition-colors duration-200 font-semibold text-lg disabled:bg-gray-400 disabled:cursor-not-allowed ${
+              isInCart(product.id)
+                ? "bg-red-600 text-white hover:bg-red-700"
+                : "bg-slate-800 text-white hover:bg-slate-900"
+            }`}
+            onClick={() => handleToggleCart(product)}
+            disabled={product.stock === 0}
+          >
+            {product.stock === 0
+              ? "Out of Stock"
+              : isInCart(product.id)
+              ? "Remove from Cart"
+              : "Add to Cart"}
           </button>
         </div>
       </div>
