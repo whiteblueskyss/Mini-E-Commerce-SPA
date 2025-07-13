@@ -41,7 +41,7 @@ export default function CheckoutModal({
       setIsSubmitting(false);
       setOrderPlaced(true);
 
-      // Close modal after 5 seconds
+      // Close modal after 3 seconds
       setTimeout(() => {
         setOrderPlaced(false);
         setFormData({ name: "", email: "", address: "" });
@@ -49,9 +49,9 @@ export default function CheckoutModal({
         // Clear cart and navigate to homepage
         clearCart();
         navigate("/");
-        onClose(); // Close the checkout modal
-        onCartClose(); // Close the cart sidebar
-      }, 5000);
+        onClose();
+        onCartClose();
+      }, 3000);
     }, 1500);
   };
 
@@ -84,7 +84,7 @@ export default function CheckoutModal({
             {!isSubmitting && (
               <button
                 onClick={handleClose}
-                className="text-gray-500 hover:text-gray-700 text-2xl p-1 rounded-full hover:bg-gray-100 transition-colors"
+                className="text-gray-500 hover:text-gray-700 text-4xl p-2 rounded-full hover:bg-gray-100 transition-colors"
               >
                 ×
               </button>

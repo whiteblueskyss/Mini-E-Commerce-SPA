@@ -19,16 +19,7 @@ export default function SidebarCart({ isOpen, onClose }) {
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
-    onClose(); // Close the cart sidebar when navigating
-  };
-
-  const handleCheckout = () => {
-    if (cartItems.length === 0) return;
-    setIsCheckoutModalOpen(true);
-  };
-
-  const handleCheckoutModalClose = () => {
-    setIsCheckoutModalOpen(false);
+    onClose();
   };
 
   let subtotal = 0;
@@ -202,7 +193,7 @@ export default function SidebarCart({ isOpen, onClose }) {
                 ? "bg-gray-400 text-gray-200 cursor-not-allowed"
                 : "bg-slate-800 text-white hover:bg-slate-900"
             }`}
-            onClick={handleCheckout}
+            onClick={() => setIsCheckoutModalOpen(true)}
             disabled={cartItems.length === 0}
           >
             <span>Checkout</span>
@@ -226,7 +217,7 @@ export default function SidebarCart({ isOpen, onClose }) {
       {/* Checkout Modal */}
       <CheckoutModal
         isOpen={isCheckoutModalOpen}
-        onClose={handleCheckoutModalClose}
+        onClose={() => setIsCheckoutModalOpen(false)}
         onCartClose={onClose}
         cartItems={cartItems}
         total={total}

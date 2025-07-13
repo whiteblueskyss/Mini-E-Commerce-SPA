@@ -30,7 +30,7 @@ export const useCartActions = () => {
 
   // Add product to cart
   const addToCart = (product) => {
-    if (product.stock <= 0) return; // Don't add if no stock
+    if (product.stock <= 0) return;
 
     const newItem = {
       id: product.id,
@@ -75,7 +75,7 @@ export const useCartActions = () => {
 
     // Check if we have enough stock for the increase
     if (quantityDifference > 0 && product.stock < quantityDifference) {
-      return; // Not enough stock
+      return;
     }
 
     setCartItems(

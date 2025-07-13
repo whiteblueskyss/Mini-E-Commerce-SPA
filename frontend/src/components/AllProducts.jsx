@@ -11,7 +11,6 @@ export default function AllProducts() {
         </p>
       </div>
 
-      {/* Products Grid */}
       <ProductCard />
     </div>
   );

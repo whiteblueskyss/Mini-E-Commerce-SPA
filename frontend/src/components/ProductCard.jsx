@@ -13,7 +13,7 @@ function ProductCard() {
       {allProducts.map((product) => (
         <div
           key={product.id}
-          className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden"
+          className="bg-white rounded-lg shadow-sm hover:shadow-2xl transition-shadow duration-300 overflow-hidden"
           style={{ width: "200px" }}
         >
           <Link to={`/product/${product.id}`}>
@@ -65,7 +65,7 @@ function ProductCard() {
                   ? "bg-red-600 text-white hover:bg-red-700"
                   : product.stock === 0
                   ? "bg-gray-400 text-gray-200 cursor-not-allowed"
-                  : "bg-slate-800 text-white hover:bg-slate-900"
+                  : "bg-blue-700 text-white hover:bg-blue-500"
               }`}
               onClick={(event) => {
                 event.preventDefault();

@@ -129,7 +129,7 @@ export default function ProductDetails() {
             className={`w-full py-4 px-6 rounded-lg transition-colors duration-200 font-semibold text-lg disabled:bg-gray-400 disabled:cursor-not-allowed ${
               isInCart(product.id)
                 ? "bg-red-600 text-white hover:bg-red-700"
-                : "bg-slate-800 text-white hover:bg-slate-900"
+                : "bg-blue-800 text-white hover:bg-blue-500"
             }`}
             onClick={() => toggleCart(product)}
             disabled={product.stock === 0}

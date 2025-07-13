@@ -3,7 +3,7 @@
 const products = [
   {
     id: 1,
-    title: "Wireless Bluetooth Headphones",
+    title: "Bluetooth Headphones",
     price: 7500,
     image:
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
@@ -59,7 +59,7 @@ const products = [
   },
   {
     id: 5,
-    title: "Stainless Steel Water Bottle",
+    title: "SS Water Bottle",
     price: 1200,
     image:
       "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=400&fit=crop",
@@ -73,7 +73,7 @@ const products = [
   },
   {
     id: 6,
-    title: "Gaming Mechanical Keyboard",
+    title: "Gaming  Keyboard",
     price: 8500,
     image:
       "https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=400&fit=crop",
