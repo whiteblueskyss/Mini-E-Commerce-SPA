@@ -5,7 +5,36 @@ import RatingStars from "../utility/RatingStars";
 
 function ProductCard() {
   const { allProducts } = useContext(ProductContext);
-  // const { addToCart } = useContext(CartContext);
+
+  const { cartItems, setCartItems } = useContext(CartContext);
+
+  const isInCart = (productId) => {
+    return cartItems.some((item) => item.id === productId);
+  };
+
+  const handleAddToCart = (product) => {
+    const newItem = {
+      id: product.id,
+      name: product.title,
+      image: product.image,
+      price: product.price,
+      quantity: 1,
+    };
+    setCartItems([...cartItems, newItem]);
+  };
+
+  const handleRemoveFromCart = (productId) => {
+    setCartItems(cartItems.filter((item) => item.id !== productId));
+  };
+
+  const handleToggleCart = (product) => {
+    if (isInCart(product.id)) {
+      handleRemoveFromCart(product.id);
+    } else {
+      handleAddToCart(product);
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 justify-items-center">
       {allProducts.map((product) => (
@@ -15,7 +44,6 @@ function ProductCard() {
           style={{ width: "200px" }}
         >
           <Link to={`/product/${product.id}`}>
-            {/* Product Image */}
             <div className="aspect-square bg-gray-100 overflow-hidden">
               <img
                 src={product.image}
@@ -26,12 +54,10 @@ function ProductCard() {
 
             {/* Product Details */}
             <div className="p-3">
-              {/* Product Title */}
               <h3 className="text-sm font-medium text-gray-900 mb-2 line-clamp-2">
                 {product.title}
               </h3>
 
-              {/* Rating and Stock - same line */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   <RatingStars rating={product.rating} />
@@ -44,7 +70,6 @@ function ProductCard() {
                 </span>
               </div>
 
-              {/* Price */}
               <div className="mb-3">
                 <span className="text-lg font-bold text-gray-900">
                   ৳{product.price}
@@ -56,13 +81,17 @@ function ProductCard() {
           {/* Add to Cart Button - Outside Link to prevent nested clickable elements */}
           <div className="p-3 pt-0">
             <button
-              className="w-full bg-slate-800 text-white py-2 px-3 rounded-md hover:bg-slate-900 transition-colors duration-200 font-medium text-sm"
+              className={`w-full py-2 px-3 rounded-md transition-colors duration-200 font-medium text-sm ${
+                isInCart(product.id)
+                  ? "bg-red-600 text-white hover:bg-red-700"
+                  : "bg-slate-800 text-white hover:bg-slate-900"
+              }`}
               onClick={(event) => {
                 event.preventDefault();
-                // Add to cart functionality can be added here
+                handleToggleCart(product);
               }}
             >
-              Add to Cart
+              {isInCart(product.id) ? "Remove from Cart" : "Add to Cart"}
             </button>
           </div>
         </div>
