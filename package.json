@@ -1,0 +1,9 @@
+{
+  "name": "mini-ecommerce-spa",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install",
+    "dev": "echo 'Use npm run dev in frontend and backend folders separately'"
+  }
+}
