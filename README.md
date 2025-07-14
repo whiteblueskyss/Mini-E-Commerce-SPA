@@ -50,7 +50,7 @@ Click
 ### Deployment
 
 - **Frontend**: Vercel
-- **Backend**: Railway
+- **Backend**: Railway or Render
 - **Database**: MongoDB Atlas
 
 ## 📦 Quick Start

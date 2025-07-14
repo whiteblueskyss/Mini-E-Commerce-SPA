@@ -1,6 +1,7 @@
 // API service for the e-commerce application
 
-const API_BASE_URL = "https://mini-e-commerce-spa-u7ca.onrender.com/api";
+const API_BASE_URL =
+  "https://mini-e-commerce-spa-production.up.railway.app/api";
 
 // https://mini-e-commerce-spa-u7ca.onrender.com/api
 // this api is also running.
