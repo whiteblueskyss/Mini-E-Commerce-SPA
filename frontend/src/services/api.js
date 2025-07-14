@@ -1,6 +1,7 @@
 // API service for the e-commerce application
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL =
+  "https://mini-e-commerce-spa-production.up.railway.app/api"; // Replace with your actual Railway URL
 
 // Products API
 export const productService = {

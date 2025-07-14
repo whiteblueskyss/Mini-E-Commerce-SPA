@@ -1,0 +1,8 @@
+{
+  "build": {
+    "builder": "@railway/builder-nixpacks"
+  },
+  "deploy": {
+    "restartPolicyType": "ON_FAILURE"
+  }
+}
